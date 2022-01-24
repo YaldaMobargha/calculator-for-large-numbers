@@ -1,0 +1,664 @@
+#include<bits/stdc++.h>
+#include<stdlib.h>
+#include<math.h>
+using namespace std;
+void showj(string a)
+{
+
+	for(int i=0;i<a.size()+1;i++)
+	cout<<"_";
+}
+string to_string(int a)//turn number to string
+{
+    string ans;
+    while(a>0)
+    {
+        ans+=a%10+'0';
+        a/=10;
+    }
+    reverse(ans.begin(),ans.end());
+    return ans;
+}
+int che(string str1)//check the input
+{
+	int a;
+	char b;
+	b=str1.length();
+	if(str1=="-0")
+	return 0;
+	if(str1=="0")
+	return 1;
+	for(int i=0;i<b;i++)
+	{
+		a=str1[i]-'0';
+		if((a<0||a>9)&&a!=(-3))
+		return 0;
+	}
+	for(int i=0;i<str1.size();i++)
+    {if(str1[i]-'0'==0)return 0;
+     else break;
+	}
+    for(int i=1;i<b;i++)
+		if(str1[i]=='-')
+		return 0;
+		return 1;
+}
+void showp(string str1,string str2)//show power sign
+{
+	int s1=str1.size(),s2=str2.size();
+	for(int i=0;i<s1;i++)
+	cout<<" ";cout<<str2<<endl<<str1;
+	for(int i=0;i<s2;i++)
+	cout<<" ";cout<<"=";
+}
+void men()//menu
+{
+    system("color 8B");
+	cout<<"<<choose operator>>"<<endl<<"0)about us"<<endl<<"1)sum"<<"      "<<"2)subtraction"<<endl
+	<<"3)Multiplication"<<"         "<<"4)division"<<endl<<"5)residual"
+	<<"   "<<"6)power"<<endl<<"7)root"<<"         "<<"8)log"<<endl<<"9)percent"<<endl<<"<<Trigonometry>>"<<endl<<"10)sin"<<"         "<<"11)cos"<<endl
+	<<"12)tan"<<"         "<<"13)cot"<<endl<<"14)sec"<<"         "<<"15)csc"<<endl<<"<<archa>>"<<endl
+	<<"16)arcsin"<<"      "<<"17)arccos"<<endl<<"18)arctan"<<endl<<"<<complex>>"
+	<<endl<<"19)sumcx"<<"         "<<"20)subtractioncx"<<endl<<"21)Multiplicationcx"<<"        "<<"22)divisioncx"<<endl;
+}
+string seperate(string str1,int n)//Separate numbers for division
+{
+	string str2;
+	for(int i=0;i<n;i++)
+	str2+=str1[i];
+	return str2;
+}
+int comp(string str1,string str2)//Compare two strings
+
+{
+	int a,s1=str1.size(),s2=str2.size();
+	if(str1==str2)
+	return 0;
+	if(s1>s2)
+	return 1;
+	if(s1<s2)
+	return -1;
+	if(s1=s2)
+	{
+		for(int i=0;i<s1;i++)
+	    {
+		if(str1[i]>str2[i])
+		return 1;
+		if(str1[i]<str2[i])
+		return -1;
+	    }
+    }
+}
+void kht(int n,string str1,string str2)//display sum & sub & multiplication
+{
+	int s1=str1.size(),s2=str2.size();
+	string t1=str1,t2=str2;
+	if(s1<s2)
+	{swap(t1,t2);swap(s1,s2);}
+	cout<<endl<<" "<<t1<<endl;
+	switch(n)
+	{
+		case 1 : cout<<"+"<<endl;break;
+		case 2 : cout<<"-"<<endl;break;
+		case 3 : cout<<"*"<<endl;break;
+	}
+	for(int i=0;i<=s1-s2;i++)
+	cout<<" ";
+	cout<<t2<<endl;
+	for(int i=0;i<=s1+1;i++)
+	cout<<"_";
+}
+string sum1(string str1,string str2)//sum of two numbers that first number is bigger and without sign
+{
+    string str3;
+    int a;
+    int b=0;
+    reverse(str1.begin(),str1.end());
+    reverse(str2.begin(),str2.end());
+    for(int i=0;i<=str2.size()-1;i++)
+    {
+        a=(str1[i]-'0'+str2[i]-'0')+b;
+        b=0;
+        if(a>9)
+        {
+            b=a/10;
+            a=a%10;
+        }
+        str3+=a+'0';
+    }
+    for(int i=str2.size();i<str1.size();i++)
+
+    {
+        a =(str1[i]-'0')+b;
+        b=0;
+        if(a>9)
+        {
+            b=a/10;
+            a=a%10;
+        }
+        str3+=a+'0';
+    }
+    if(b!=0) str3+=b+'0';
+    reverse(str3.begin(),str3.end());
+    return str3;
+}
+string sub1(string str1,string str2)//subtraction of 2 numbers that the first one is bigger and without sign
+{
+	string str3;
+	int a;
+	int n=0;
+	int b=0;
+	if(str1==str2)
+	return "0";
+	reverse(str1.begin(),str1.end());
+	reverse(str2.begin(),str2.end());
+	for(int i=0; i<str2.size();i++)
+	{
+		if((str1[i]-'0')<(str2[i]-'0'))
+		{
+			str3+=(str1[i]-str2[i]+10)+'0';
+			str1[i+1]=((str1[i+1]-'0')-1)+'0';
+		}
+		else
+		{
+		  str3+=(str1[i]-str2[i])+'0';
+		}
+
+	}
+	for(int i=str2.size();i<str1.size();i++)
+	{
+		str3+=(str1[i]);
+	}
+    reverse(str3.begin(),str3.end());
+	for(int i=0;i<=str3.size()-1;i++)
+	{
+
+	if(str3[i]-'0'!=0)
+    break;
+    else
+    n++;
+
+    }
+    str3.erase(0,n);
+	return str3;
+}
+string sum(string str1,string str2)//sum of 2 numbers
+{
+	int flag1=1;
+	int flag2=1;
+	int f3=0;
+	string str3;
+	int a;
+	//save
+    if((str1[0]-'0')==(-3))
+	flag1=0;
+	if((str2[0]-'0')==(-3))
+	flag2=0;
+	//erase sign
+	if(flag1==0)
+	str1.erase(0,1);
+	if(flag2==0)
+    str2.erase(0,1);
+	//compare 2 numbers
+	if(comp(str1,str2)==-1)
+	{
+		swap(str1,str2);
+		f3=1;
+	}
+	if(flag1==1&&flag2==1)
+    {
+	str3=sum1(str1,str2);
+	return str3;
+	}
+	if(flag1==0&&flag2==0)
+	{
+		str3=sum1(str1,str2);
+		str3.insert(0,"-");
+		return str3;
+	}
+	if(flag1==1&&flag2==0&&f3==0)
+	{
+		str3=sub1(str1,str2);
+		return str3;
+	}
+	if(flag1==1&&flag2==0&&f3==1)
+	{
+		str3=sub1(str1,str2);
+		str3.insert(0,"-");
+		return str3;
+	}
+	if(flag1==0&&flag2==1&&f3==0)
+	{
+		str3=sub1(str1,str2);
+		str3.insert(0,"-");
+		return str3;
+	}
+	if(flag1==0&&flag2==1&&f3==1)
+	{
+		str3=sub1(str1,str2);
+		return str3;
+	}
+}
+string subs(string str1,string str2)//sum of 2 numbers 
+{
+	string str3;
+	//multiplication of negative sign in sign of the second number
+	if(str2[0]-'0'==-3)
+	str2.erase(0,1);
+	else
+	str2.insert(0,"-");
+	str3=sum(str1,str2);
+	return str3;
+
+}
+string mul(string str1,string str2)//multiplication without sign
+{
+	string str3="0";
+	string str4="0";
+	int a=0;
+	int b=0;
+	reverse(str1.begin(),str1.end());
+	reverse(str2.begin(),str2.end());
+	for(int j=0;j<str2.size();j++)
+	{
+		str3.erase(0,str3.size());
+		for(int m=0;m<j;m++)
+		{
+			str3+='0';
+		}
+	for(int i=0;i<str1.size();i++)
+	{
+
+		a=((str1[i]-'0')*(str2[j]-'0'))+b;
+		b=0;
+		if(a>9)
+		{
+		   b=(a/10);
+           a=a%10;
+		}
+
+	str3+=a+'0';
+	}
+	if(b!=0)
+	str3+=b+'0';
+	b=0;
+	reverse(str3.begin(),str3.end());
+	reverse(str4.begin(),str4.end());
+	str4=sum1(str3,str4);
+	reverse(str3.begin(),str3.end());
+	reverse(str4.begin(),str4.end());
+    }
+	reverse(str4.begin(),str4.end());
+    return str4;
+
+}
+string muls(string str1,string str2)//multiplication without sign
+{
+    int f1=1,f2=1;
+	string ans;
+	if(str1=="0"||str2=="0")
+	return "0";
+	if(str1[0]=='-')
+	f1=0;
+	if(str2[0]=='-')
+	f2=0;
+
+	if(f1==0)
+	str1.erase(0,1);
+	if(f2==0)
+    str2.erase(0,1);
+    ans=mul(str1,str2);
+    if((f1==0&&f2==0)||(f1==1&&f2==1))
+    return ans;
+    if((f1==1&&f2==0)||(f1==0&&f2==1))
+	{ans.insert(0,"-");return ans;}
+}
+string div4(string str1,string str2)//division without sign
+{
+	string str3,str4,str5,i,ans;
+	int a;
+	int f1=0,f2=0;
+	int s1=str1.size(),s2=str2.size();
+	str3=seperate(str1,str2.size());
+	if(comp(str3,str2)==-1)
+	{str3=seperate(str1,str2.size()+1);f2=1;}
+	if(str3==str1)
+	f1=1;
+	if(f2==1)
+	{
+			for(int j=s2+1;j<=s1;j++)
+	{
+		for(i="0";1;i=sum1(i,"1"))
+		{
+			str5=muls(str2,i);
+			if(comp(str5,str3)==1)
+			{i=sub1(i,"1");str5=muls(str2,i);break;}
+
+		}
+		        str3=sub1(str3,str5);
+		        if(f1==0)
+				str3+=str1[j];
+				ans+=i;
+	}
+	}
+	if(f2==0)
+	{
+		for(int j=s2;j<=s1;j++)
+	{
+		for(i="0";1;i=sum1(i,"1"))
+		{
+			str5=muls(str2,i);
+			if(comp(str5,str3)==1)
+			{i=sub1(i,"1");str5=muls(str2,i);break;}
+
+		}
+
+		        str3=sub1(str3,str5);
+		        if(f1==0&&j!=s1)
+				str3+=str1[j];
+				ans+=i;
+	}
+	}
+	return ans;
+}
+string divs(string str1,string str2)//division with sign,Up to one decimal 
+{
+	int f1=1,f2=1;
+	string ans;
+	str1+="0";
+	if(str1=="0")
+	return "0";
+	if(str2=="0")
+	return "tarif nashode";
+	if(str1[0]=='-')
+	f1=0;
+	if(str2[0]=='-')
+	f2=0;
+	if(comp(str1,str2)==-1)
+	return "0";
+	if(f1==0)
+	str1.erase(0,1);
+	if(f2==0)
+    str2.erase(0,1);
+    ans=div4(str1,str2);
+    reverse(ans.begin(),ans.end());
+    if(ans.size()==1)
+	ans.insert(1,".0");
+	else
+	ans.insert(1,".");
+	reverse(ans.begin(),ans.end());
+    if((f1==0&&f2==0)||(f1==1&&f2==1))
+    return ans;
+    if((f1==1&&f2==0)||(f1==0&&f2==1))
+	{ans.insert(0,"-");return ans;}
+
+}
+string pow(string str1,string str2)//power with sign 
+{
+	string i="1";
+	string sefr="0";
+	string j="1";
+	string str3="1";
+	int flag1=0;
+	if(str1=="0"&&str2=="0")
+	return "ambiguity";
+	if(str2=="0")
+	return"1";
+	if(str1[0]=='-')
+	{
+		flag1=1;
+		str1.erase(0,1);
+	}
+	if(str2[0]=='-')
+	return sefr;
+	while(str2!=i)
+	{
+		str3=mul(str1,str3);
+		if(str3.size()>250)
+		return "overflow";
+		i=sum1(i,j);
+	}
+	str3=mul(str3,str1);
+	if(str2[str2.size()-1]%2!=0&&flag1==1)
+	str3.insert(0,"-");
+	return str3;
+}
+string root(string a,int n)//root with sign(complex) Up to two decimal
+{
+	string str;int f=0;
+	if(n<1)
+	return "Undefined";
+	if(a[0]=='-')
+	{a.erase(0,1);f=1;}
+    for(int i=1;i<=n*2;i++)
+    {
+        a+="0";
+    }
+    string ans="0";
+    string d="1";
+    int s=((a.size()-1)/n);
+    for(int k=1;k<=s;k++)
+    {
+        d+='0';
+    }
+    while(comp(d,"0")>0)
+    {
+        while(1)
+        {
+            ans=sum(ans,d);
+            if(comp(pow(ans,to_string(n)),a)==1)
+            break;
+		}
+            ans=sub1(ans,d);
+        d.erase(d.size()-1,1);
+        if(pow(ans,to_string(n))==a)
+        break;
+        if(comp(pow(sum(ans,"1"),to_string(n)),a)==1)
+        break;
+        }
+    reverse(ans.begin(),ans.end());
+    ans.insert(2,".");
+	 reverse(ans.begin(),ans.end());
+	 if(f==1)
+	 ans+="i";
+    return ans;
+}
+string residue(string str1,string str2)//residue of 2 sign numbers
+{
+	string str3,i,ans;
+	int f;
+	if(str1[0]=='-'){str1.erase(0,1);f=1;}
+	if(str2[0]=='-')return "wrong input";
+	i=div4(str1,str2);
+	str3=mul(str2,i);
+	ans=subs(str1,str3);
+	if(f==1)
+	{
+	ans=sub1(str2,ans);
+	str1.insert(0,"-");
+	}
+	return ans;
+}
+string log(string str1,string str2)//log 
+{
+	string ans,j,i="0";
+	while(1)
+	{
+		j=pow(str2,i);
+		if(comp(j,str1)==1)
+		{
+			i=sub1(i,"1");
+			break;
+		}
+		i=sum1(i,"1");
+
+	}
+	return i;
+}
+double radian(string str1)//Convert degrees to radians
+{
+	int a,b=1,c;
+	double ans;
+	a=str1.size();
+	for(int i=a-1;i>=0;i--)
+	{c+=(str1[i]-'0')*b;b*=10;}
+	ans=c*(3.14/180);
+	return ans;
+}
+string percent(string str1,string str2)
+{
+	string ans;
+	ans=mul(str1,str2);
+	ans=div4(ans,"100");
+	return ans;
+
+}
+string mokh(string re1,string im1,string re2,string im2,int n)//sum & sub & multiplication of two complex numbers
+{
+	string ans,temp;
+	switch (n)
+	{
+		case 19:ans=sum(re1,re2);temp=sum(im1,im2);if(temp[0]!='-')temp.insert(0,"+");ans+=temp;ans+="i";
+		break;
+		case 21:ans=subs(re1,re2);temp=subs(im1,im2);if(temp[0]!='-')temp.insert(0,"+");ans+=temp;ans+="i";
+		break;
+		case 22:ans=subs(muls(re1,re2),muls(im1,im2));temp=sum(muls(re1,im2),muls(re2,im1));if(temp[0]!='-')temp.insert(0,"+");ans+=temp;ans+="i";
+		break;
+	}
+	return ans;
+}
+string mokht(string re1,string im1,string re2,string im2)//two complex numbers division with sign,Up to one decimal 
+{
+	string ans,t1,t2,i2,temp;
+	t1=sum(pow(re2,"2"),pow(im2,"2"));
+	if(im2[0]=='-')
+	im2.erase(0,1);
+	else
+	im2.insert(0,"-");
+	t2=subs(muls(re1,re2),muls(im1,im2));
+	i2=sum(muls(re1,im2),muls(re2,im1));
+	t2=divs(t2,t1);
+	temp=divs(i2,t1);
+	ans+=t2;
+	if(temp[0]!='-')temp.insert(0,"+");ans+=temp;ans+="i";
+	return ans;
+}
+double degree(double x)//convert radian to degree
+{
+	x=x*(180/3.14);
+	return x;
+}
+int main()
+{
+	string str1,str2,str3,str4;
+	int n,a;
+	double x;
+	men();
+	cin>>n;
+	if(n<0||n>22)
+	{cout<<"no operator";return 0;}
+	if(n==0)
+	{cout<<"G121"<<endl<<"coder name";return 0;}
+   	cout<<"Enter the first input"<<endl;
+	if(n<=6||n==9)
+    {
+
+    	cin>>str1;
+    	if(che(str1)==0){cout<<"first input is wrong"<<endl;return 0;}
+    	if(n==9&&str1[0]=='-')
+    	{cout<<"wrong input";return 0;}
+    	cout<<"Enter the second input"<<endl;
+    	cin>>str2;
+    	if(che(str2)==0){cout<<"second input is wrong"<<endl;return 0;}
+    	if(n==9&&str2[0]=='-')
+    	{cout<<"wrong percent";return 0;}
+	}
+	if(n==8)
+	{
+		cin>>str1;
+		if(str1=="0")
+		{cout<<"-inf"<<endl;return 0;}
+
+	    if(str1[0]=='-')
+	    {cout<<"wrong number"<<endl;;return 0;}
+	    cout<<"enter the x"<<endl;
+		cin>>str2;
+	    if(str2[0]=='0'||str2=="0")
+        {cout<<"wrong x"<<endl;return 0;}
+	}
+	if(n==7)
+	{
+		cin>>str1;
+		if(che(str1)==0){cout<<"first input is wrong"<<endl;return 0;}
+		cout<<"enter the number of root you want"<<endl;
+		cin>>a;
+	}
+	if(n>=10&&n<=15)
+	{
+	    cin>>str1;
+    	if(che(str1)==0){cout<<"wrong input"<<endl;return 0;}
+	}
+	if(n>=16 &&n<=18)
+	{
+		cin>>x;
+	}
+	if(n<=22&&n>=19)
+	{
+		cout<<"real part of first number"<<endl;
+		cin>>str1;if(che(str1)==0){cout<<"real part of first number"<<endl;return 0;}
+		cout<<"imaginary part of first number"<<endl;
+		cin>>str2;if(che(str2)==0){cout<<"imaginary part of first number"<<endl;return 0;}
+		cout<<"real part of second number"<<endl;
+		cin>>str3;if(che(str3)==0){cout<<"real part of second number"<<endl;return 0;}
+		cout<<"imaginary part of second number"<<endl;
+		cin>>str4;if(che(str4)==0){cout<<"imaginary part of second number"<<endl;return 0;}
+	}
+	switch(n)
+	{
+		case 1 : cout<<endl;kht(1,str1,str2);cout<<" "<<endl<<sum(str1,str2)<<endl;
+		break;
+		case 2: cout<<endl;kht(2,str1,str2);cout<<" "<<endl<<subs(str1,str2)<<endl;
+		break;
+		case 3 : cout<<endl;kht(3,str1,str2);cout<<" "<<endl<<muls(str1,str2)<<endl;
+		break;
+		case 4 : cout<<endl<<str1<<"/"<<str2<<"="<<divs(str1,str2)<<endl;
+		break;
+		case 5 : cout<<endl<<str1<<"%"<<str2<<"="<<residue(str1,str2)<<endl;
+		break;
+		case 6 : cout<<endl;showp(str1,str2);cout<<pow(str1,str2)<<endl;
+		break;
+		case 7 : cout<<endl<<"  ";showj(root(str1,a));cout<<endl<<"\\/"<<root(str1,a)<<endl;
+		break;
+		case 8 : cout<<endl<<"   "<<str1<<endl<<"log"<<str2<<"="<<log(str1,str2)<<endl;
+		break;
+		case 9 : cout<<endl<<str1<<"%"<<str2<<"="<<percent(str1,str2)<<endl;
+		break;
+		case 10 : cout<<endl<<"sin"<<"("<<str1<<")"<<"="<<sin(radian(residue(str1,"360")))<<endl;
+		break;
+		case 11 : cout<<endl<<"cos"<<"("<<str1<<")"<<"="<<cos(radian(residue(str1,"360")))<<endl;
+		break;
+		case 12 : cout<<endl<<"tan"<<"("<<str1<<")"<<"="<<tan(radian(residue(str1,"360")))<<endl;
+		break;
+		case 13 : cout<<endl<<"cot"<<"("<<str1<<")"<<"="<<1/tan(radian(residue(str1,"360")))<<endl;
+		break;
+		case 14 : cout<<endl<<"sec"<<"("<<str1<<")"<<"="<<1/cos(radian(residue(str1,"360")))<<endl;
+		break;
+		case 15 : cout<<endl<<"csc"<<"("<<str1<<")"<<"="<<1/sin(radian(residue(str1,"360")))<<endl;
+		break;
+		case 16 : cout<<endl<<"arcsin"<<"("<<x<<")"<<"=";x=asin(x);cout<<degree(x)<<endl;
+		break;
+		case 17 : cout<<endl<<"arccos"<<"("<<x<<")"<<"=";x=acos(x);cout<<degree(x)<<endl;
+		break;
+		case 18 : cout<<endl<<"arctan"<<"("<<x<<")"<<"=";x=atan(x);cout<<degree(x)<<endl;
+		break;
+		case 19 : cout<<endl<<str1<<"+("<<str2<<")i+"<<str3<<"+("<<str4<<")i="<<mokh(str1,str2,str3,str4,19)<<endl;
+		break;
+		case 20 : cout<<endl<<str1<<"+("<<str2<<")i-"<<str3<<"+("<<str4<<")i="<<mokh(str1,str2,str3,str4,20)<<endl;
+		break;
+		case 21 : cout<<endl<<str1<<"+("<<str2<<")i*"<<str3<<"+("<<str4<<")i="<<mokh(str1,str2,str3,str4,21)<<endl;
+		break;
+		case 22 : cout<<endl<<str1<<"+("<<str2<<")i/"<<str3<<"+("<<str4<<")i="<<mokht(str1,str2,str3,str4)<<endl;
+		break;
+	}
+	return 0;
+}
